@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台幣保單活化方案：圖表化說明</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+line-height: 1.6;
+color: #333;
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+background-color: #f8f9fa;
+}
+.header {
+background: linear-gradient(135deg, #1a3a6c, #2c5282);
+color: white;
+padding: 25px;
+border-radius: 10px;
+margin-bottom: 25px;
+text-align: center;
+}
+h1 {
+font-size: 2.2em;
+margin-bottom: 10px;
+}
+.subtitle {
+font-size: 1.3em;
+opacity: 0.9;
+max-width: 800px;
+margin: 0 auto;
+}
+.section {
+background: white;
+border-radius: 10px;
+padding: 20px;
+margin-bottom: 25px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+h2 {
+color: #1a3a6c;
+border-bottom: 2px solid #e2e8f0;
+padding-bottom: 8px;
+margin-top: 0;
+font-size: 1.6em;
+}
+h3 {
+color: #2c5282;
+margin-top: 15px;
+font-size: 1.3em;
+}
+.chart-container {
+height: 300px;
+margin: 20px 0;
+position: relative;
+}
+.two-column {
+display: flex;
+gap: 20px;
+margin: 25px 0;
+}
+@media (max-width: 768px) {
+.two-column {
+flex-direction: column;
+}
+}
+.column {
+flex: 1;
+}
+.risk-highlight {
+background-color: #fff9db;
+border-left: 4px solid #ecc94b;
+padding: 15px;
+border-radius: 0 4px 4px 0;
+margin: 15px 0;
+}
+.key-points {
+display: flex;
+flex-wrap: wrap;
+gap: 15px;
+margin: 20px 0;
+}
+.point-card {
+flex: 1;
+min-width: 200px;
+background: #f0f7ff;
+border: 1px solid #90cdf4;
+border-radius: 8px;
+padding: 15px;
+}
+.point-title {
+font-weight: bold;
+color: #2b6cb0;
+margin-bottom: 8px;
+}
+.recommendation {
+background-color: #e6f7ff;
+border: 1px solid #91d5ff;
+border-radius: 8px;
+padding: 20px;
+margin: 20px 0;
+text-align: center;
+}
+.action-btn {
+background: linear-gradient(135deg, #1a3a6c, #2c5282);
+color: white;
+border: none;
+padding: 12px 25px;
+font-size: 1.1em;
+border-radius: 30px;
+cursor: pointer;
+display: inline-block;
+margin-top: 15px;
+font-weight: bold;
+}
+.highlight-box {
+background: #ebf8ff;
+border: 1px solid #90cdf4;
+border-radius: 8px;
+padding: 15px;
+margin: 15px 0;
+}
+.comparison-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 15px;
+margin: 20px 0;
+}
+.solution-card {
+border: 1px solid #e2e8f0;
+border-radius: 8px;
+padding: 15px;
+text-align: center;
+}
+.solution-title {
+background: #2c5282;
+color: white;
+padding: 8px;
+border-radius: 5px;
+margin: -15px -15px 15px -15px;
+}
+.footer {
+text-align: center;
+margin-top: 30px;
+color: #718096;
+font-size: 0.9em;
+padding: 15px;
+}
+.priority-badge {
+display: inline-block;
+padding: 3px 10px;
+border-radius: 15px;
+font-size: 0.85em;
+margin-right: 5px;
+}
+.priority-high { background-color: #fed7d7; color: #c53030; }
+</style>
+</head>
+<body>
+<div class="header">
+<h1>台幣保單活化方案：圖表化說明</h1>
+<div class="subtitle">爸爸為子女購買之台幣保單稅務風險與美元轉換策略（2025年8月）</div>
+</div>
+
+<div class="section">
+<h2>您的保單現況與風險</h2>
+
+<div class="two-column">
+<div class="column">
+<h3>當前保單結構</h3>
+<div class="chart-container">
+<canvas id="currentStructureChart"></canvas>
+</div>
+</div>
+<div class="column">
+<h3>三大稅務風險</h3>
+<div class="chart-container">
+<canvas id="riskChart"></canvas>
+</div>
+</div>
+</div>
+
+<div class="risk-highlight">
+<strong>⚠️ 緊急提醒：</strong> 根據2024年台中高等行政法院判例，您目前的保單結構（要保人≠被保人 + 保額<現金價值）可能被課徵10%-20%贈與稅，1000萬保單面臨100-200萬稅務風險！
+</div>
+</div>
+
+<div class="section">
+<h2>三種活化方案比較</h2>
+
+<div class="key-points">
+<div class="point-card">
+<div class="point-title">方案一(重視長期資產成長)：全部轉換</div>
+<p>500萬全轉美元保單<br></p>
+</div>
+<div class="point-card">
+<div class="point-title">方案二(在意資金靈活性)：一半轉換</div>
+<p>250萬轉美元保單<br></p>
+</div>
+<div class="point-card">
+<div class="point-title">方案三(需要收益最大化)：槓桿貸款</div>
+<p>保留50萬應急資金<br>以450萬現金價值貸出450萬<br>總計900萬轉美元保單</p>
+</div>
+</div>
+
+<h3>5年總收益比較（萬元）</h3>
+<div class="chart-container">
+<canvas id="profitChart"></canvas>
+</div>
+
+<div class="highlight-box">
+<strong>💡 關鍵解讀：</strong> 方案三（槓桿貸款）5年總收益194萬，比方案一多66萬，比方案二多30萬。即使在保守情境下，仍比台幣保單多賺135萬。
+</div>
+
+<div class="two-column" style="margin-top: 25px;">
+<div class="column">
+<h3>資金流動性評分</h3>
+<div class="chart-container">
+<canvas id="liquidityChart"></canvas>
+</div>
+</div>
+<div class="column">
+<h3>稅務安全評分</h3>
+<div class="chart-container">
+<canvas id="taxSafetyChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>三方案詳細收益分析比較</h2>
+
+<div class="two-column">
+<div class="column">
+<h3>收益組成（5年累計）</h3>
+<div class="chart-container">
+<canvas id="profitBreakdownChart"></canvas>
+</div>
+</div>
+<div class="column">
+<h3>匯率情境分析</h3>
+<div class="chart-container">
+<canvas id="scenarioChart"></canvas>
+</div>
+</div>
+</div>
+
+<div class="highlight-box">
+<strong>💡 關鍵解讀：</strong> 在匯率30-32-34情境下，方案一收益128-166-204萬，方案二收益154-192-230萬，方案三收益180-218-256萬。三個方案都能有效提升收益，可依據個人風險偏好選擇。
+</div>
+</div>
+
+<div class="section">
+<h2>三方案5年資產成長軌跡比較</h2>
+<div class="chart-container" style="height: 350px;">
+<canvas id="growthChart"></canvas>
+</div>
+
+<div class="highlight-box">
+<strong>💡 關鍵解讀：</strong>
+<ul>
+<li>台幣保單：500萬 → 559萬（年化2.25%）</li>
+<li>方案一：500萬 → 628萬（年化4.8%）</li>
+<li>方案二：250萬轉換，總資產達682萬（年化6.4%）</li>
+<li>方案三：500萬 → 694萬（年化7.75%）</li>
+</ul>
+<p><strong>收益差異：</strong>方案一多69萬，方案二多123萬，方案三多135萬</p>
+</div>
+</div>
+
+<div class="section">
+<h2>三方案特色比較</h2>
+
+<div class="comparison-grid">
+<div class="solution-card">
+<div class="solution-title">稅務安全</div>
+<div class="chart-container" style="height: 150px; margin: 10px 0;">
+<canvas id="taxSafetyDetail1"></canvas>
+</div>
+<p>三方案皆可規避贈與稅風險（要保人=爸爸）</p>
+</div>
+<div class="solution-card">
+<div class="solution-title">資產放大</div>
+<div class="chart-container" style="height: 150px; margin: 10px 0;">
+<canvas id="assetAmplification"></canvas>
+</div>
+<p>方案一：保障500萬→1,000萬<br>方案二：保障500萬→1,200萬<br>方案三：保障500萬→1,400萬</p>
+</div>
+<div class="solution-card">
+<div class="solution-title">資金靈活</div>
+<div class="chart-container" style="height: 150px; margin: 10px 0;">
+<canvas id="liquidityDetail"></canvas>
+</div>
+<p>方案一：全部鎖定6年<br>方案二：一半可靈活運用<br>方案三：保留50萬應急資金</p>
+</div>
+</div>
+</div>
+
+<div class="recommendation">
+<h2>專業建議：選擇最適合您的方案</h2>
+<p style="font-size: 1.1em; line-height: 1.8;">
+<span class="priority-badge priority-high">緊急</span>
+<strong>8月31日前完成轉換，可鎖定目前匯率29.94，避開9月可能的利率調降</strong>
+</p>
+
+<div class="two-column" style="margin-top: 20px;">
+<div class="column">
+<h3>選擇建議</h3>
+<ul style="text-align: left; padding-left: 20px;">
+<li><strong>保守型：</strong>選擇方案一，穩健轉換</li>
+<li><strong>平衡型：</strong>選擇方案二，兼顧收益與靈活</li>
+<li><strong>積極型：</strong>選擇方案三，追求最大收益</li>
+<li>所有方案都能完全解決稅務風險</li>
+</ul>
+</div>
+<div class="column">
+<h3>共同優勢</h3>
+<ul style="text-align: left; padding-left: 20px;">
+<li>完全解決贈與稅風險</li>
+<li>大幅提升保障額度</li>
+<li>享受美元商品高利率</li>
+<li>可選擇醫療功能保障</li>
+</ul>
+</div>
+</div>
+
+<button class="action-btn">立即預約諮詢，選擇最適合的方案</button>
+</div>
+
+<div class="footer">
+<p>© 2025 台灣保險市場分析 | 資料基於2025年8月13日匯率29.94</p>
+<p>註：實際收益受匯率、利率、稅法變動影響，建議簽約前詳閱保單條款</p>
+</div>
+
+<script>
+// 當前保單結構圖
+const currentStructureCtx = document.getElementById('currentStructureChart').getContext('2d');
+new Chart(currentStructureCtx, {
+type: 'doughnut',
+data: {
+labels: ['已貸款保單 (500萬)', '待活化保單 (500萬)'],
+datasets: [{
+data: [50, 50],
+backgroundColor: ['#4299e1', '#ed8936'],
+borderWidth: 0
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+position: 'bottom',
+},
+tooltip: {
+callbacks: {
+label: function(context) {
+return context.label + ': ' + context.parsed + '% (' + (context.parsed * 5) + '00萬)';
+}
+}
+}
+}
+}
+});
+
+// 稅務風險圖
+const riskCtx = document.getElementById('riskChart').getContext('2d');
+new Chart(riskCtx, {
+type: 'bar',
+data: {
+labels: ['要保人≠被保人', '保額<現金價值', '貸款利息侵蝕'],
+datasets: [{
+label: '稅務風險等級',
+data: [9, 8, 6],
+backgroundColor: ['#c53030', '#dd6b20', '#dd6b20']
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+y: {
+beginAtZero: true,
+max: 10,
+ticks: {
+stepSize: 2
+}
+}
+},
+plugins: {
+legend: {
+display: false
+}
+}
+}
+});
+
+// 收益比較圖
+const profitCtx = document.getElementById('profitChart').getContext('2d');
+new Chart(profitCtx, {
+type: 'bar',
+data: {
+labels: ['台幣保單', '方案一', '方案二', '方案三'],
+datasets: [{
+label: '5年總收益（萬元）',
+data: [59, 128, 164, 194],
+backgroundColor: [
+'rgba(156, 163, 175, 0.7)',
+'rgba(59, 130, 246, 0.7)',
+'rgba(34, 197, 94, 0.7)',
+'rgba(234, 179, 8, 0.7)'
+],
+borderColor: [
+'rgba(156, 163, 175, 1)',
+'rgba(59, 130, 246, 1)',
+'rgba(34, 197, 94, 1)',
+'rgba(234, 179, 8, 1)'
+],
+borderWidth: 1
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+y: {
+beginAtZero: true
+}
+}
+}
+});
+
+// 流動性評分
+const liquidityCtx = document.getElementById('liquidityChart').getContext('2d');
+new Chart(liquidityCtx, {
+type: 'doughnut',
+data: {
+labels: ['方案一', '方案二', '方案三'],
+datasets: [{
+data: [30, 75, 55],
+backgroundColor: [
+'rgba(59, 130, 246, 0.7)',
+'rgba(34, 197, 94, 0.7)',
+'rgba(234, 179, 8, 0.7)'
+],
+borderWidth: 0
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+position: 'bottom',
+},
+tooltip: {
+callbacks: {
+label: function(context) {
+return context.label + ': ' + context.parsed + '/100';
+}
+}
+}
+}
+}
+});
+
+// 稅務安全評分
+const taxSafetyCtx = document.getElementById('taxSafetyChart').getContext('2d');
+new Chart(taxSafetyCtx, {
+type: 'radar',
+data: {
+labels: ['要保人一致性', '保額/現金價值比', '貸款結構', '資產傳承', '稅務判例'],
+datasets: [
+{
+label: '方案一',
+data: [10, 9, 8, 9, 9],
+fill: true,
+backgroundColor: 'rgba(59, 130, 246, 0.2)',
+borderColor: 'rgb(59, 130, 246)',
+pointBackgroundColor: 'rgb(59, 130, 246)',
+pointBorderColor: '#fff',
+pointHoverBackgroundColor: '#fff',
+pointHoverBorderColor: 'rgb(59, 130, 246)'
+},
+{
+label: '方案二',
+data: [10, 10, 8, 10, 10],
+fill: true,
+backgroundColor: 'rgba(34, 197, 94, 0.2)',
+borderColor: 'rgb(34, 197, 94)',
+pointBackgroundColor: 'rgb(34, 197, 94)',
+pointBorderColor: '#fff',
+pointHoverBackgroundColor: '#fff',
+pointHoverBorderColor: 'rgb(34, 197, 94)'
+},
+{
+label: '方案三',
+data: [10, 9, 9, 9, 9],
+fill: true,
+backgroundColor: 'rgba(234, 179, 8, 0.2)',
+borderColor: 'rgb(234, 179, 8)',
+pointBackgroundColor: 'rgb(234, 179, 8)',
+pointBorderColor: '#fff',
+pointHoverBackgroundColor: '#fff',
+pointHoverBorderColor: 'rgb(234, 179, 8)'
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+r: {
+angleLines: {
+display: true
+},
+suggestedMin: 5,
+suggestedMax: 10
+}
+}
+}
+});
+
+// 收益組成圖（改為三方案比較）
+const profitBreakdownCtx = document.getElementById('profitBreakdownChart').getContext('2d');
+new Chart(profitBreakdownCtx, {
+type: 'bar',
+data: {
+labels: ['方案一', '方案二', '方案三'],
+datasets: [
+{
+label: '利率收益',
+data: [46, 69, 95],
+backgroundColor: 'rgba(59, 130, 246, 0.7)'
+},
+{
+label: '匯率收益',
+data: [63, 94, 126],
+backgroundColor: 'rgba(234, 179, 8, 0.7)'
+},
+{
+label: '貸款成本節省',
+data: [19, 29, 35],
+backgroundColor: 'rgba(34, 197, 94, 0.7)'
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+x: {
+stacked: true,
+},
+y: {
+stacked: true,
+beginAtZero: true
+}
+},
+plugins: {
+tooltip: {
+callbacks: {
+label: function(context) {
+return `${context.dataset.label}: ${context.parsed.y}萬`;
+}
+}
+}
+}
+}
+});
+
+// 匯率情境分析（三方案比較）
+const scenarioCtx = document.getElementById('scenarioChart').getContext('2d');
+new Chart(scenarioCtx, {
+type: 'bar',
+data: {
+labels: ['匯率30', '匯率32', '匯率34'],
+datasets: [
+{
+label: '台幣保單',
+data: [59, 59, 59],
+backgroundColor: 'rgba(156, 163, 175, 0.7)'
+},
+{
+label: '方案一（全轉）',
+data: [128, 166, 204],
+backgroundColor: 'rgba(59, 130, 246, 0.7)'
+},
+{
+label: '方案二（一半轉）',
+data: [154, 192, 230],
+backgroundColor: 'rgba(34, 197, 94, 0.7)'
+},
+{
+label: '方案三（槓桿）',
+data: [180, 218, 256],
+backgroundColor: 'rgba(234, 179, 8, 0.7)'
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+y: {
+beginAtZero: true
+}
+},
+plugins: {
+tooltip: {
+callbacks: {
+label: function(context) {
+return `${context.dataset.label}: ${context.parsed.y}萬`;
+}
+}
+}
+}
+}
+});
+
+// 5年資產成長軌跡（三方案比較）
+const growthCtx = document.getElementById('growthChart').getContext('2d');
+new Chart(growthCtx, {
+type: 'line',
+data: {
+labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+datasets: [
+{
+label: '台幣保單',
+data: [500, 511, 523, 535, 547, 559],
+borderColor: 'rgba(156, 163, 175, 1)',
+backgroundColor: 'rgba(156, 163, 175, 0.1)',
+tension: 0.3,
+fill: true
+},
+{
+label: '方案一（全轉）',
+data: [500, 524, 548, 574, 600, 628],
+borderColor: 'rgba(59, 130, 246, 1)',
+backgroundColor: 'rgba(59, 130, 246, 0.1)',
+tension: 0.3,
+fill: true
+},
+{
+label: '方案二（一半轉）',
+data: [500, 533, 568, 604, 642, 682],
+borderColor: 'rgba(34, 197, 94, 1)',
+backgroundColor: 'rgba(34, 197, 94, 0.1)',
+tension: 0.3,
+fill: true
+},
+{
+label: '方案三（槓桿）',
+data: [500, 539, 580, 623, 668, 694],
+borderColor: 'rgba(234, 179, 8, 1)',
+backgroundColor: 'rgba(234, 179, 8, 0.1)',
+tension: 0.3,
+fill: true
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+y: {
+beginAtZero: false,
+min: 480,
+max: 720
+}
+},
+plugins: {
+tooltip: {
+callbacks: {
+label: function(context) {
+return context.dataset.label + ': ' + context.parsed.y.toFixed(0) + '萬';
+}
+}
+}
+}
+}
+});
+
+// 稅務安全細節
+const taxSafetyDetailCtx = document.getElementById('taxSafetyDetail1').getContext('2d');
+new Chart(taxSafetyDetailCtx, {
+type: 'doughnut',
+data: {
+labels: ['安全', '風險'],
+datasets: [{
+data: [95, 5],
+backgroundColor: ['rgba(34, 197, 94, 0.7)', 'rgba(239, 68, 68, 0.7)'],
+borderWidth: 0
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+display: false
+},
+tooltip: {
+enabled: false
+}
+}
+}
+});
+
+// 資產放大效果（修正保障額度數據）
+const assetAmplificationCtx = document.getElementById('assetAmplification').getContext('2d');
+new Chart(assetAmplificationCtx, {
+type: 'bar',
+data: {
+labels: ['原保障', '方案一', '方案二', '方案三'],
+datasets: [{
+label: '保障額度（萬元）',
+data: [500, 1000, 1200, 1400],
+backgroundColor: [
+'rgba(156, 163, 175, 0.7)', 
+'rgba(59, 130, 246, 0.7)', 
+'rgba(34, 197, 94, 0.7)', 
+'rgba(234, 179, 8, 0.7)'
+],
+borderColor: [
+'rgba(156, 163, 175, 1)', 
+'rgba(59, 130, 246, 1)', 
+'rgba(34, 197, 94, 1)', 
+'rgba(234, 179, 8, 1)'
+],
+borderWidth: 1
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+scales: {
+y: {
+beginAtZero: true
+}
+},
+plugins: {
+legend: {
+display: false
+},
+tooltip: {
+callbacks: {
+label: function(context) {
+return context.labels[context.dataIndex] + ': ' + context.parsed.y + '萬';
+}
+}
+}
+}
+}
+});
+
+// 資金靈活度（修正為實際的圖表類型）
+const liquidityDetailCtx = document.getElementById('liquidityDetail').getContext('2d');
+new Chart(liquidityDetailCtx, {
+type: 'doughnut',
+data: {
+labels: ['應急資金（隨時可用）', '閉鎖資金（3年期）'],
+datasets: [{
+data: [50, 450],
+backgroundColor: ['rgba(34, 197, 94, 0.7)', 'rgba(59, 130, 246, 0.7)'],
+borderWidth: 0
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: {
+position: 'bottom',
+},
+tooltip: {
+callbacks: {
+label: function(context) {
+const value = context.parsed;
+const total = context.dataset.data.reduce((a, b) => a + b, 0);
+const percentage = Math.round((value / total) * 100);
+return `${context.label}: ${value}萬 (${percentage}%)`;
+}
+}
+}
+}
+}
+});
+</script></body>
+</html>
